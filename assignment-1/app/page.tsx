@@ -30,7 +30,7 @@ export default function Home() {
   }
 
   return (
-    <main className={"${myFont.classname} flex justify-center items-center min-h-screen p-4 gap-14 bg-gradient-to-br from-white to-gray-100"}>
+    <main className={`${myFont.className} flex justify-center items-center min-h-screen p-4 gap-14 bg-gradient-to-br from-white to-gray-100`}>
       <div className="flex flex-col items-start max-w-md w-full space-y-6 -translate-y-4">
         <h1 className="text-4xl font-bold w-full text-center">Quote Generator</h1>
         
@@ -59,10 +59,6 @@ export default function Home() {
         </div>
 
         <div className="mt-6 space-y-3 w-full max-w-md">
-          {results.length === 0 && topic.trim() !== "" ? (
-              <p className="text-green-950 text-center mr-7"></p>
-            ) : null}
-
           {results.length > 0 ? (
             results.map((quote, index) => (
               <p key={index}  className="p-4 bg-gray-900 text-white hover:bg-gray-800 transition rounded-xl shadow text-center italic">
@@ -71,7 +67,7 @@ export default function Home() {
             ))
           ) : (
             <p className="text-gray-950 mt-6 text-center mr-5">
-              "Enter a topic to get quotes"
+              Enter a topic to get quotes
             </p>
           )}
         </div>
