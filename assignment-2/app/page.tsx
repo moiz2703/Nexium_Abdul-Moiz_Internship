@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Poppins, Roboto } from "next/font/google";
+const [summary, setSummary] = useState("");
+const [loading, setLoading] = useState(false);
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -23,9 +25,17 @@ const roboto = Roboto({
 export default function BlogSummarizer() {
   const [url, setUrl] = useState("");
 
-  const handleSubmit = () => {
-    console.log("Submitted URL:", url);
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
+  try {
+    const response = await fetch("http://localhost:5678/webhook/blog-summariser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url }),
+    });
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6">
@@ -39,18 +49,18 @@ export default function BlogSummarizer() {
             Paste a blog URL below and get a quick summary powered by AI.
           </p>
 
-          <div className={`${roboto.className} flex flex-col sm:flex-row gap-4`}>
+          <form className={`${roboto.className} flex flex-col sm:flex-row gap-4`}>
             <Input
               type="url"
-              placeholder="Enter the URL..."
+              placeholder="Enter blog URL..."
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               className="flex-1"
             />
             <Button className={`${roboto.className} w-full sm:w-auto`} onClick={handleSubmit}>
-              Summarize
+              Get Summary
             </Button>
-          </div>
+          </form>
         </CardContent>
       </Card>
     </div>
