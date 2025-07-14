@@ -22,8 +22,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     })
 
     res.status(200).json({ fullText: paragraphs.join('\n\n') })
-  } catch (err: any) {
-    console.error('Scraper error:', err)
-    res.status(500).json({ error: 'Failed to scrape URL.', details: err.message })
-  }
+  } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error('Scraping error:', err.message);
+      } else {
+        console.error('Scraping error:', err);
+      }
+   }
+
 }
