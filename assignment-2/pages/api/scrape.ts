@@ -25,8 +25,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     await browser.close();
     return res.status(200).json({ fullText: text || 'No paragraph text found.' });
-  } catch (err: any) {
-    console.error('Scraper error:', err);
-    return res.status(500).json({ error: 'Failed to scrape URL.', details: err.message });
-  }
+  } catch (err) {
+      console.error('Scraper error:', err);
+      if (err instanceof Error) {
+        return res.status(500).json({ error: 'Failed to scrape URL.', details: err.message });
+      }
+      return res.status(500).json({ error: 'Failed to scrape URL.', details: 'Unknown error' });
+    }
+
 }
