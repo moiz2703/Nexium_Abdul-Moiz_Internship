@@ -31,6 +31,48 @@ export default function BlogSummarizer() {
   const [isUrdu, setToUrdu] = useState(false);
   
 
+  async function saveSummaryToSupabase(url: string, summary: string) {
+    try {
+      const response = await fetch('/api/save_summary', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ url, summary })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to save summary')
+      }
+
+      const data = await response.json()
+      console.log('Summary saved:', data)
+    } catch (error) {
+      console.error('Error saving summary:', error)
+    }
+  }
+
+  async function saveFullContentToMongo(url: string, fullContent: string) {
+    try {
+      const response = await fetch('/api/save_fullContent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url, fullContent }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to save full content to MongoDB')
+      }
+
+      const data = await response.json()
+      console.log('Full content saved to MongoDB:', data)
+    } catch (error) {
+      console.error('Error saving full content:', error)
+    }
+  }
+
   const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text)
     .then(() => alert("Summary copied to clipboard!"))
@@ -64,7 +106,16 @@ export default function BlogSummarizer() {
       }
 
       const data = await response.json();
-      setSummary(data.summary || "No summary received.");
+      const fetchedSummary = data.summary || "No summary received.";
+      const fullContent = data.fullText || "";
+      setSummary(fetchedSummary);
+
+      saveSummaryToSupabase(url, fetchedSummary)
+      .catch(err => console.error('Failed to save to Supabase in background:', err)); // saving to supabase
+
+      saveFullContentToMongo(url, fullContent)
+      .catch(err => console.error('Failed to save full content to MongoDB:', err));
+
     } catch (err) {
       console.error(err);
       setError("An error occurred while fetching summary.");
