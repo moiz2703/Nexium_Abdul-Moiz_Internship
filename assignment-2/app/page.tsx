@@ -25,7 +25,6 @@ const roboto = Roboto({
 export default function BlogSummarizer() {
   const [url, setUrl] = useState("");
   const [summary, setSummary] = useState("");
-  const [_urduSummary, _setUrduSummary] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isUrdu, setToUrdu] = useState(false);
