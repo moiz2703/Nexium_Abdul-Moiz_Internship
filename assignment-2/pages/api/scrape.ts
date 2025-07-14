@@ -1,36 +1,29 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { chromium } from 'playwright';
+import type { NextApiRequest, NextApiResponse } from 'next'
+import axios from 'axios'
+import * as cheerio from 'cheerio'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { url } = req.body;
+  const { url } = req.body
   if (!url) {
-    return res.status(400).json({ error: 'No URL provided' });
+    return res.status(400).json({ error: 'No URL provided' })
   }
 
   try {
-    const browser = await chromium.launch({ headless: true });
-    const page = await browser.newPage({ userAgent: 'Mozilla/5.0' });
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 20000 });
+    const { data: html } = await axios.get(url)
+    const $ = cheerio.load(html)
+    const paragraphs: string[] = []
 
-    const text = await page.$$eval('p', (ps: Element[]) =>
-        ps.map((p: Element) => (p as HTMLElement).innerText.trim())
-            .filter(p => p.length > 0)
-            .join('\n\n')
-        );
+    $('p').each((_, el) => {
+      paragraphs.push($(el).text().trim())
+    })
 
-
-    await browser.close();
-    return res.status(200).json({ fullText: text || 'No paragraph text found.' });
-  } catch (err) {
-      console.error('Scraper error:', err);
-      if (err instanceof Error) {
-        return res.status(500).json({ error: 'Failed to scrape URL.', details: err.message });
-      }
-      return res.status(500).json({ error: 'Failed to scrape URL.', details: 'Unknown error' });
-    }
-
+    res.status(200).json({ fullText: paragraphs.join('\n\n') })
+  } catch (err: any) {
+    console.error('Scraper error:', err)
+    res.status(500).json({ error: 'Failed to scrape URL.', details: err.message })
+  }
 }
