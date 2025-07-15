@@ -124,72 +124,72 @@ export default function BlogSummarizer() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6">
-      <Card className="w-full max-w-lg h-auto shadow-2xl border-none bg-white/90 dark:bg-zinc-900/90 backdrop-blur">
-        <CardContent className="p-8 space-y-6">
-          <h1 className={`${poppins.className} text-3xl font-bold text-center`}>
-            📝 Blog Summarizer
-          </h1>
+        <div
+          className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex items-center justify-center p-6"
+          style={{ backgroundImage: "url('/Blog_bg.png')" }}
+        >
+          <div className=" bg-white/10 border border-white/30 rounded-xl shadow-xl max-w-2xl w-full p-10 text-white space-y-6">
+        
+            <h1 className={`${poppins.className} text-4xl font-bold text-center`}>
+              AI Blog Summarizer
+            </h1>
 
-          <p className={`${roboto.className} text-center text-muted-foreground`}>
-            Paste a blog URL below and get a quick summary powered by AI.
-          </p>
+            <p className={`${roboto.className} text-center text-lg opacity-80`}>
+              Summarize long blogs in seconds. Save time, read smarter.
+            </p>
 
-          <form 
-            onSubmit={handleSubmit} 
-            className={`${roboto.className} flex flex-col sm:flex-row gap-4`}
-          >
-            <Input
-              type="url"
-              placeholder="Enter blog URL..."
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              className="flex-1"
-            />
-            <Button type="submit" className={`${roboto.className} w-full sm:w-auto`}>
-              {loading ? "Summarizing..." : "Get Summary"}
-            </Button>
-          </form>
-
-          {summary && (
-            <div className={`${roboto.className} ${isUrdu ? "text-right" : "text-left"} mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded`}>
-              <h2 className="text-lg font-semibold mb-2">
-                {isUrdu ? ": اردو خلاصہ" : "Summary:" }
-              </h2>
-              <p>
-                {isUrdu ? translateToUrdu(summary) : summary}
-              </p>
-               <div className={`flex items-center`}>
-                  <Copy
-                    className={`cursor-pointer text-gray-700 hover:text-gray-800`}
-                    size={17}
-                    onClick={() => copyToClipboard(summary)}
-                  />
-               </div>
-            </div>
-          )}
-
-          {summary && !isUrdu && (
-            <Button 
-              className= {`${roboto.className} mt-2`}
-              onClick={() => setToUrdu(true)}
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col sm:flex-row gap-4"
             >
-              Translate to Urdu
-            </Button>
-          )}
+              <Input
+                type="url"
+                placeholder="Enter blog URL..."
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                className="flex-1 bg-white/20 border border-white/40 text-white placeholder-white/70"
+              />
+              <Button
+                type="submit"
+                className=" hover:bg-white/30 text-white font-semibold"
+              >
+                {loading ? "Summarizing..." : "Get Summary"}
+              </Button>
+            </form>
 
-          {summary && isUrdu && (
-            <Button 
-              className = {`${roboto.className} mt-2`}
-              onClick={() => setToUrdu(false)}
+        {summary && (
+          <div className={`${roboto.className} ${isUrdu ? "text-right" : "text-left"} mt-4 p-4 bg-white/10 border border-white/30 rounded`}>
+            <h2 className="text-xl font-semibold mb-2">
+              {isUrdu ? ": اردو خلاصہ" : "Summary:"}
+            </h2>
+            <p className="whitespace-pre-wrap">{isUrdu ? translateToUrdu(summary) : summary}</p>
+            <Copy
+              className="cursor-pointer mt-2 text-white/80 hover:text-white"
+              size={17}
+              onClick={() => copyToClipboard(summary)}
+            />
+          </div>
+        )}
+        {summary && !isUrdu && (
+          <Button 
+            className= {`hover:bg-white/30 ${roboto.className} mt-2`}
+            onClick={() => setToUrdu(true)}
+          >
+            Translate to Urdu
+          </Button>
+        )}
+
+        {summary && isUrdu && (
+          <Button 
+            className = {`hover:bg-white/30 ${roboto.className} mt-2`}
+            onClick={() => setToUrdu(false)}
             >
               Show in English
             </Button>
-          )}
+        )}
 
-          {error && <p className="text-red-800">{error}</p>}
-        </CardContent>
-      </Card>
+        {error && <p className="text-red-300">{error}</p>}
+      </div>
     </div>
   );
 }
