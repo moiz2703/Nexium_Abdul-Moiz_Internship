@@ -15,7 +15,7 @@ export default function RootLayout({
     <html lang="en" className="{`${poppins.variable} ${roboto.variable}`}">
       <body
       >
-        <main className="bg-purple-950">
+        <main>
           {children}
         </main>
       </body>
