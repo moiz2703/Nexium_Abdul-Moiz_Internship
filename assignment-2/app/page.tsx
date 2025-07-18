@@ -121,7 +121,7 @@ export default function BlogSummarizer() {
       setLoading(false);
     }
   };
-  
+
     return (
     <div className="relative min-h-screen bg-black overflow-hidden">
       <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-800 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
@@ -129,7 +129,7 @@ export default function BlogSummarizer() {
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-sky-700 rounded-full mix-blend-multiply filter blur-xl opacity-15 animate-pulse delay-2000"></div>
 
       <div className="relative z-10 flex flex-col items-center justify-center px-6 pt-24 pb-12 text-white text-opacity-90">
-        <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-white via-emerald-300 to-teal-200 bg-clip-text text-transparent text-center">
+        <h1 className={`${poppins.className} text-5xl md:text-7xl font-bold bg-gradient-to-r from-white via-emerald-300 to-teal-200 bg-clip-text text-transparent text-center`}>
           AI Blog Summarizer
         </h1>
         <p className="mt-4 text-lg text-center max-w-xl">
@@ -175,7 +175,7 @@ export default function BlogSummarizer() {
               onChange={(e) => setUrl(e.target.value)}
               className="flex-1 bg-white/10 border border-white/20 text-white placeholder-white/60 px-4 py-3 rounded-xl"
             />
-            <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-xl text-white font-semibold transition hover:scale-105">
+            <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-xl text-white font-semibold transition hover:scale-105 flex-1">
               {loading ? "Summarizing..." : "Get Summary"}
             </Button>
           </form>
