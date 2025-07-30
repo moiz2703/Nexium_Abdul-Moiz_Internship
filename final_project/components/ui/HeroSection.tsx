@@ -1,6 +1,7 @@
 import { Montserrat } from 'next/font/google';
 import { Poppins ,Roboto} from 'next/font/google';
 import { Button } from './button';
+import Link from 'next/link';
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -20,6 +21,14 @@ const poppins = Poppins({
 
 
 export default function HeroSection() {
+
+  const handleExploreClick = () => {
+  const aboutSection = document.getElementById('about');
+  if (aboutSection) {
+      aboutSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className={`${montserrat.variable} min-h-screen text-white flex flex-col justify-center items-center px-4`}>
       <div className="text-center space-y-7 max-w-3xl mx-auto -mt-12">
@@ -29,16 +38,18 @@ export default function HeroSection() {
         <h1 className={`${poppins.className} text-6xl md:text-8xl bg-gradient-to-r from-green-400 via-cyan-200 to-blue-400 text-transparent bg-clip-text mx-auto`}>
           Build Your Mind <br /> Boost Your Life
         </h1>
-        <p className={`max-w-6xl mx-auto text-lg text-gray-300 mt-10`}>
+        <p className={`${roboto.className} max-w-6xl mx-auto text-lg text-gray-300 mt-10`}>
         A powerful mental wellness companion to help you reflect, relax, and grow stronger every day — nurturing emotional clarity, inner peace, and long-term resilience.
         </p>
-        <div className="flex items-center justify-center gap-8 mt-20">
-          <Button className="bg-blue-800 px-4 py-5 w-35 font-semibold hover:scale-105 transition hover:shadow-lg hover:bg-blue-600">
+        <div className="flex items-center justify-center gap-8 mt-18">
+          <Button onClick={handleExploreClick} className="bg-blue-800 px-4 py-5 w-35 font-semibold transition transform hover:scale-105 hover:shadow-lg hover:bg-blue-600 active:scale-95 active:translate-y-1 active:bg-blue-800">
             Explore
           </Button>
-          <Button className="bg-white text-black px-4 py-5 w-35 hover:bg-gray-400 font-semibold hover:scale-105 transition hover:shadow-lg">
+          <Link href='/login'>
+          <Button className="bg-white text-black px-4 py-5 w-35 hover:bg-gray-400 font-semibold hover:scale-105 transition hover:shadow-lg active:scale-95 active:bg-gray-white">
             Get Started
           </Button>
+          </Link>
         </div>
       </div>
     </section>
