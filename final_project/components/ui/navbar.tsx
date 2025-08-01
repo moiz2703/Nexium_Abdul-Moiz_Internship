@@ -6,11 +6,8 @@ import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useRouter } from 'next/navigation';
-import { Ghost } from 'lucide-react';
 
-type NavbarProps = {
-  variant: 'reflect' | 'dashboard'
-}
+
 
 export function Navbar({ variant }: { variant: 'reflect' | 'dashboard' }) {
   const router=useRouter();  
@@ -22,6 +19,7 @@ export function Navbar({ variant }: { variant: 'reflect' | 'dashboard' }) {
     }
   };
 
+
   try {
     return (
       <nav className='text-white py-2 px-6 translate-y-4 flex items-center relative'>
@@ -31,21 +29,23 @@ export function Navbar({ variant }: { variant: 'reflect' | 'dashboard' }) {
         {variant === 'reflect' && (
           <>
           <div className='absolute left-1/2 transform -translate-x-1/2 flex gap-4'>
-          <Button className='bg-transparent hover:text-blue-200'>
+          <Link href={"/reflect"}>
+          <Button className='bg-transparent hover:text-blue-200 hover:bg-transparent'>
             Home
           </Button>
-            <Button variant="ghost" onClick={handleExploreClick} className='text-white'>
+          </Link>
+            <Button onClick={handleExploreClick} className='text-white hover:text-blue-200 bg-transparent hover:bg-transparent'>
             About
             </Button>
             <Link href="/dashboard">
-                <Button variant="outline" className='text-black'>
+                <Button className='text-white hover:text-blue-300 bg-transparent hover:bg-transparent'>
                     Dashboard
                 </Button>
             </Link>
             </div>\
             <div className='ml-auto flex gap-4'>
-              <Link href={"/home"}>
-              <Button variant={'outline'} className='text-black'>
+              <Link href={"/"}>
+              <Button  className='text-black bg-white hover:bg-gray-200'>
                 Logout
               </Button>
               </Link>
@@ -66,13 +66,47 @@ export function Navbar({ variant }: { variant: 'reflect' | 'dashboard' }) {
             </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        <nav/>
         </>
         )}
         {variant === 'dashboard' && (
           <>
-            <Link href="/dashboard/overview">Overview</Link>
-            <Link href="/dashboard/settings">Settings</Link>
+          <div className='absolute left-1/2 transform -translate-x-1/2 flex gap-4'>
+          <Link href={"/reflect"}>
+          <Button className='bg-transparent hover:text-blue-200 hover:bg-transparent'>
+            Home
+          </Button>
+          </Link>
+            <Button onClick={handleExploreClick} className='text-white hover:text-blue-200 bg-transparent hover:bg-transparent'>
+            About
+            </Button>
+                <Button className='text-white hover:text-blue-200 bg-transparent hover:bg-transparent'>
+                    Dashboard
+                </Button>
+
+            </div>\
+            <div className='ml-auto flex gap-4'>
+              <Link href={"/"}>
+              <Button  className='text-black bg-white hover:bg-gray-200'>
+                Logout
+              </Button>
+              </Link>
+            <DropdownMenu>
+            <DropdownMenuTrigger>
+                <Avatar className="cursor-pointer w-10 h-10">
+                <AvatarImage src="/avatar.png" />
+                <AvatarFallback className='text-white bg-green-800 text-xl font-bold'>U</AvatarFallback>
+                </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+                <DropdownMenuItem onClick={() => router.push('/change-password')}>
+                Change Password
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push('/account')}>
+                My Account
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
           </>
         )}
       </nav>

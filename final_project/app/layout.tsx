@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
 import backgroundimage from "@/public/background.png";
-import NavbarWrapper from "@/components/navbarwrapper";
+import NavbarWrapper from "@/components/ui/navbarwrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,11 +38,17 @@ export default function RootLayout({
             className="object-cover object-center"
           />
         </div>
-        <div className="absolute inset-0 bg-black opacity-60" />
-        <NavbarWrapper/>
-        <main className="relative z-10 min-h-screen flex flex-col">
-          {children}
-          <footer id="about" className="bg-black text-gray-300 py-12 px-6 mt-20">
+        <div className="fixed inset-0 bg-black opacity-50 -z-10" />
+
+        <div className="flex flex-col min-h-screen relative z-10">
+          <NavbarWrapper />
+          <main className="flex-grow w-full">
+            {children}
+          </main>
+          <footer
+            id="about"
+            className="bg-black text-gray-300 py-12 px-6"
+          >
             <div className="text-md max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
               <div>
                 <h3 className="text-white text-xl font-semibold mb-4">About MindWave</h3>
@@ -51,7 +57,7 @@ export default function RootLayout({
                 </p>
               </div>
 
-              <div className="ml-10">
+              <div className="md:ml-10">
                 <h3 className="text-white text-xl font-semibold mb-4 text-start">Core Features</h3>
                 <ul className="space-y-2">
                   <li>🧠 AI-Based Reflections</li>
@@ -71,8 +77,7 @@ export default function RootLayout({
               © {new Date().getFullYear()} MindWave. All rights reserved.
             </div>
           </footer>
-
-        </main>
+        </div>
       </body>
     </html>
   );

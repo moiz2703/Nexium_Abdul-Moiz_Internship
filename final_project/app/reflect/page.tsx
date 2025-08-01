@@ -4,9 +4,7 @@ import React, { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select"
-import { ReactFormState } from "react-dom/client"
-import { Value } from "@radix-ui/react-select"
-
+import { Loader } from "lucide-react"
 
 export default function Reflect() {
   const [journal, setjournal] = useState("");
@@ -15,7 +13,7 @@ export default function Reflect() {
   const [mood, setmood]=useState("");
   const [aisuggestions, setaisuggestions] = useState<string[]>([]);
   const[aisummary, setaisummary]=useState("");
-  
+  const[sugg,setsugg]=useState(false)
   
 const saveToSupabase = async (
   stress: number,
@@ -62,7 +60,7 @@ const handlesubmit = async (e:React.FormEvent<HTMLFormElement>) => {
   setloading(true);
 
   try {
-    const response = await fetch("https://abdul2781.app.n8n.cloud/webhook/mind_wave", {
+    const response = await fetch("http://localhost:5678/webhook/mind_wave", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -80,6 +78,7 @@ const handlesubmit = async (e:React.FormEvent<HTMLFormElement>) => {
     const anxiety = data.anxiety_level;
     const summary = data.agent_summary;
     const suggestions = data.suggestions 
+    setsugg(true);
     setaisummary(summary || "No summary generated.");
     setaisuggestions(Array.isArray(suggestions) ? suggestions : []);
 
@@ -104,67 +103,83 @@ const handlesubmit = async (e:React.FormEvent<HTMLFormElement>) => {
         Take a moment to reflect on how you're feeling today — and receive instant suggestions to help you feel calmer and more centered.
       </p>
 
-      <div className="w-full max-w-md mt-5 p-6 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md shadow-lg space-y-6">
-        <div className="space-y-2">
-          <h2 className="text-lg font-semibold text-white">How are you feeling today?</h2>
-          <Select onValueChange = {(value) => setmood(value)}>
-            <SelectTrigger className="w-full bg-white/10 border border-white/20 text-white placeholder:text-gray-300 rounded-md px-4 py-2 hover:bg-white/20 transition">
-              <SelectValue placeholder="Select your mood" />
-            </SelectTrigger>
-            <SelectContent className="bg-gray-800 text-white border border-white/10 rounded-md">
-              <SelectItem value="happy">😊 Happy</SelectItem>
-              <SelectItem value="sad">😔 Sad</SelectItem>
-              <SelectItem value="anxious">😟 Anxious</SelectItem>
-              <SelectItem value="angry">😡 Angry</SelectItem>
-              <SelectItem value="tired">😴 Tired</SelectItem>
-            </SelectContent>
-          </Select>
+      <div className="flex flex-col md:flex-row gap-10 transition-all duration-500">
+        <div className={`transition-all duration-500 w-full ${sugg ? "max-w-md" : "w-[500px] md:w-[600px]"} mt-5 p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-lg space-y-6`}>
+          <div className="space-y-2">
+            <h2 className="text-md md:text-lg font-semibold text-white">How are you feeling today?</h2>
+            <Select onValueChange = {(value) => setmood(value)}>
+              <SelectTrigger className="w-full bg-[#021024] border border-white/20 text-white placeholder:text-gray-300 rounded-md px-4 py-2 hover:bg-white/20 transition">
+                <SelectValue placeholder="Select your mood" />
+              </SelectTrigger>
+              <SelectContent className="bg-[#021024] text-white border border-white/10 rounded-md">
+                <SelectItem value="happy">😊 Happy</SelectItem>
+                <SelectItem value="sad">😔 Sad</SelectItem>
+                <SelectItem value="anxious">😟 Anxious</SelectItem>
+                <SelectItem value="angry">😡 Angry</SelectItem>
+                <SelectItem value="tired">😴 Tired</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <h2 className="text-md md:text-lg font-semibold text-white">Write a short journal</h2>
+              <form onSubmit={handlesubmit} className="space-y-4">
+                <Input
+                type="journal"
+                value={journal}
+                placeholder="Write your journal entry..."
+                onChange={(e)=> setjournal(e.target.value)}
+                className="w-full h-12 resize-none rounded-md bg-[#021024] text-white placeholder:text-gray-400 border border-white/20 px-4 py-0 focus-visible:ring-1 focus-visible:ring-white/30 transition"
+                />
+                {loading ? (
+                  <Button
+                    disabled
+                    className="flex items-center gap-2 bg-blue-700 text-white px-4 py-2 rounded-lg shadow"
+                  >
+                    <Loader className="animate-spin h-4 w-4" />
+                    Analyzing...
+                  </Button>
+                ) : (
+                  <Button
+                    className="bg-blue-700 text-white px-4 py-2 rounded-lg shadow w-full"
+                  >
+                    Get Suggestions
+                  </Button>
+                )}
+
+              </form>
+
+              {aisummary && (
+              <div className="mt-8 space-y-6]">
+                <div className="bg-[#021024] border border-white/20 rounded-xl p-4 shadow">
+                  <h3 className="text-xl font-semibold text-white mb-2">🧠 Your Mental State Summary</h3>
+                  <p className="text-gray-200 whitespace-pre-line">{aisummary}</p>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="space-y-2">
-          <h2 className="text-lg font-semibold text-white">Write a short journal</h2>
-            <form onSubmit={handlesubmit} className="space-y-4">
-              <Input
-              type="journal"
-              value={journal}
-              placeholder="Write your journal entry..."
-              onChange={(e)=> setjournal(e.target.value)}
-              className="w-full h-15 resize-none rounded-md bg-white/10 text-white placeholder:text-gray-400 border border-white/20 px-4 py-3 focus-visible:ring-1 focus-visible:ring-white/30 transition"
-              />
-              <Button className="w-full bg-blue-800 hover:bg-blue-600 hover:scale-105 transition active:scale-95 active:bg-blue-800">
-                {loading? "Getting Your Solution": "Get suggestions"}
-              </Button>
-            </form>
-
-            {aisummary && (
-            <div className="mt-8 space-y-6">
-              <div className="bg-white/10 border border-white/20 rounded-xl p-4 shadow">
-                <h3 className="text-xl font-semibold text-white mb-2">🧠 Your Mental State Summary</h3>
-                <p className="text-gray-200 whitespace-pre-line">{aisummary}</p>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-4">✨ Suggestions for You</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {aisuggestions.length > 0 ? (
-                    aisuggestions.map((suggestion, index) => (
-                      <div
-                        key={index}
-                        className="bg-white/10 border border-white/20 rounded-xl p-4 text-white shadow"
-                      >
-                        <h4 className="font-bold mb-2">Suggestion {index + 1}</h4>
-                        <p className="text-gray-300">{suggestion.trim()}</p>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-gray-400">No suggestions generated.</p>
-                  )}
-                </div>
+        {sugg && (
+          <div className="bg-white/5 border border-white/10 rounded-2xl mt-5 p-6 max-w-md">
+          {aisuggestions.length > 0 && (
+            <div className="-mt-0.5 w-full max-w-4xl">
+              <h3 className="text-xl font-semibold text-white mb-4">✨ Suggestions for You</h3>
+              <div className="grid gap-4 max-w-100">
+                {aisuggestions.map((suggestion, index) => (
+                  <div
+                    key={index}
+                    className="bg-gradient-to-br from-blue-950 via-blue-950 to-blue-900 border border-white/10 rounded-xl p-4 shadow text-white"
+                  >
+                    <h4 className="font-bold mb-2">Suggestion {index + 1}</h4>
+                    <p className="text-gray-200">{suggestion.trim()}</p>
+                  </div>
+                ))}
               </div>
             </div>
           )}
-
-        </div>
+          </div>
+        )}
       </div>
     </div>
   )

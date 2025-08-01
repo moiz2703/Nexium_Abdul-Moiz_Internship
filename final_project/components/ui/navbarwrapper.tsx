@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation'
-import { Navbar } from './ui/navbar'
+import { Navbar } from './navbar'
 
 export default function NavbarWrapper() {
   try {

@@ -2,6 +2,7 @@ import { Montserrat } from 'next/font/google';
 import { Poppins ,Roboto} from 'next/font/google';
 import { Button } from './button';
 import Link from 'next/link';
+import { Play, Telescope } from 'lucide-react';
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -43,10 +44,12 @@ export default function HeroSection() {
         </p>
         <div className="flex items-center justify-center gap-8 mt-18">
           <Button onClick={handleExploreClick} className="bg-blue-800 px-4 py-5 w-35 font-semibold transition transform hover:scale-105 hover:shadow-lg hover:bg-blue-600 active:scale-95 active:translate-y-1 active:bg-blue-800">
+            <Telescope className='fill-current'/>
             Explore
           </Button>
           <Link href='/login'>
           <Button className="bg-white text-black px-4 py-5 w-35 hover:bg-gray-400 font-semibold hover:scale-105 transition hover:shadow-lg active:scale-95 active:bg-gray-white">
+           <Play className='fill-current'/>
             Get Started
           </Button>
           </Link>
