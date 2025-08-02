@@ -70,7 +70,7 @@ export default function AuthPage() {
           )}
           <input
             type="email"
-            placeholder="Enter your Email"
+            placeholder="Enter your email"
             name='email'
             autoComplete='email'
             value={email}
@@ -80,7 +80,7 @@ export default function AuthPage() {
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="password . . ."
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full p-3 rounded-xl bg-white/10 text-white placeholder-gray-300"
@@ -99,13 +99,13 @@ export default function AuthPage() {
 
         <p className="text-sm text-gray-300 mt-6 text-center">
           {isLogin ? "Don't have an account?" : "Already have an account?"}{' '}
-          <button
-            type="button"
+          <Button
+            type="submit"
             onClick={() => setIsLogin(!isLogin)}
-            className="text-blue-400 underline hover:text-blue-300"
+            className="text-blue-400 underline hover:text-blue-300 bg-transparent hover:bg-transparent p-0"
           >
             {isLogin ? 'Register now' : 'Sign in here'}
-          </button>
+          </Button>
         </p>
       </div>
     </div>

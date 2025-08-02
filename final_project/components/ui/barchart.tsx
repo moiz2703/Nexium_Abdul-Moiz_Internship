@@ -12,14 +12,26 @@ export default function BarChartComponent({ logs }: { logs: any[] }) {
   return (
     <ResponsiveContainer width="100%" height={250}>
       <BarChart data={data}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="date" />
-        <YAxis domain={[0, 10]} />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="stress" fill="#9C0808" radius={[4, 4, 0, 0]} />
-        <Bar dataKey="anxiety" fill="#FBBF24" radius={[4, 4, 0, 0]} />
-        <Bar dataKey="depression" fill="#60A5FA" radius={[4, 4, 0, 0]} />
+        <CartesianGrid stroke='#ffffff22' strokeDasharray="3 3" strokeWidth={0.3}/>
+        <XAxis dataKey="date" tickMargin={12}  style={{ fontSize: 13 }}/>
+        <YAxis domain={[0, 10]} tickMargin={12}/>
+        <Tooltip
+          contentStyle={{
+            backgroundColor: 'black',
+            border: '1px solid #444',
+            borderRadius: '6px',
+            color: 'white',
+            maxHeight: 150,
+            overflowY: 'auto',
+          }}
+          itemStyle={{ color: 'white' }}
+          cursor={{ fill: '#ffffff22' }}
+        />
+
+        <Legend wrapperStyle={{ marginTop: 20 }}/>
+        <Bar dataKey="stress" fill="#0e45ac" radius={[4, 4, 0, 0]} />
+        <Bar dataKey="anxiety" fill="#2ef0f7" radius={[4, 4, 0, 0]} />
+        <Bar dataKey="depression" fill="#0a7e86" radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
   );

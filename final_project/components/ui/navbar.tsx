@@ -5,12 +5,15 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { User } from 'lucide-react';
+import { supabase } from '@/lib/supabaseClient';
 
 
 
 export function Navbar({ variant }: { variant: 'reflect' | 'dashboard' }) {
   const router=useRouter();  
+
 
   const handleExploreClick = () => {
   const aboutSection = document.getElementById('about');
@@ -18,11 +21,21 @@ export function Navbar({ variant }: { variant: 'reflect' | 'dashboard' }) {
       aboutSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
+  const handlelogout = async () =>{
+    const {error} = await supabase.auth.signOut();
+    if (error){
+      console.error('Logout failed:', error.message);
+    }
+   
 
+  }
+
+  const pathname = usePathname();
+  const isdash = pathname === "/dashboard"
 
   try {
     return (
-      <nav className='text-white py-2 px-6 translate-y-4 flex items-center relative'>
+      <nav className={`${isdash? "bg-black": "bg-transparent translate-y-4"} text-white py-2 px-6 flex items-center relative`}>
         <h2 className='text-xl font-bold'>
             MindWave
         </h2>
@@ -34,26 +47,27 @@ export function Navbar({ variant }: { variant: 'reflect' | 'dashboard' }) {
             Home
           </Button>
           </Link>
-            <Button onClick={handleExploreClick} className='text-white hover:text-blue-200 bg-transparent hover:bg-transparent'>
-            About
+          <Link href="/dashboard">
+            <Button className='text-white hover:text-blue-300 bg-transparent hover:bg-transparent'>
+                Dashboard
             </Button>
-            <Link href="/dashboard">
-                <Button className='text-white hover:text-blue-300 bg-transparent hover:bg-transparent'>
-                    Dashboard
-                </Button>
-            </Link>
+          </Link>
+          <Button onClick={handleExploreClick} className='text-white hover:text-blue-200 bg-transparent hover:bg-transparent'>
+            About
+          </Button>
             </div>\
             <div className='ml-auto flex gap-4'>
               <Link href={"/"}>
-              <Button  className='text-black bg-white hover:bg-gray-200'>
+              <Button onClick={handlelogout} className='text-black bg-white hover:bg-gray-200 h-8 mt-1'>
                 Logout
               </Button>
               </Link>
             <DropdownMenu>
             <DropdownMenuTrigger>
                 <Avatar className="cursor-pointer w-10 h-10">
-                <AvatarImage src="/avatar.png" />
-                <AvatarFallback className='text-white bg-green-800 text-xl font-bold'>U</AvatarFallback>
+                <AvatarFallback className='text-red-400 bg-red-950 text-xl font-bold'>
+                <User className='fill-current'/>  
+                </AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -76,25 +90,28 @@ export function Navbar({ variant }: { variant: 'reflect' | 'dashboard' }) {
             Home
           </Button>
           </Link>
-            <Button onClick={handleExploreClick} className='text-white hover:text-blue-200 bg-transparent hover:bg-transparent'>
+          
+          <Button className='text-white hover:text-blue-200 bg-transparent hover:bg-transparent'>
+            Dashboard
+          </Button>
+
+          <Button onClick={handleExploreClick} className='text-white hover:text-blue-200 bg-transparent hover:bg-transparent'>
             About
-            </Button>
-                <Button className='text-white hover:text-blue-200 bg-transparent hover:bg-transparent'>
-                    Dashboard
-                </Button>
+          </Button>
 
             </div>\
             <div className='ml-auto flex gap-4'>
               <Link href={"/"}>
-              <Button  className='text-black bg-white hover:bg-gray-200'>
+              <Button onClick={handlelogout} className='text-black bg-white hover:bg-gray-200 h-8 mt-1'>
                 Logout
               </Button>
               </Link>
             <DropdownMenu>
             <DropdownMenuTrigger>
                 <Avatar className="cursor-pointer w-10 h-10">
-                <AvatarImage src="/avatar.png" />
-                <AvatarFallback className='text-white bg-green-800 text-xl font-bold'>U</AvatarFallback>
+                <AvatarFallback className='text-red-400 bg-red-950 text-xl font-bold'>
+                  <User className='fill-current'/>
+                </AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>

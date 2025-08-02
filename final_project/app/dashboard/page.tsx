@@ -5,6 +5,7 @@ import PieChartComponent from '@/components/ui/piechart';
 import MentalHealthAreaChart from '@/components/ui/MHchart';
 import BarChartComponent from '@/components/ui/barchart';
 
+
 type Log = {
   stress_level: number | null;
   anxiety_level: number | null;
@@ -26,7 +27,6 @@ export default function Dashboard() {
         console.error("User not found");
         return;
       }
-
       setName(user.user_metadata?.full_name || '');
 
      const { data, error } = await supabase
@@ -86,53 +86,93 @@ const avg = (key: NumericLogKey): number => {
     ? Math.floor((Date.now() - new Date(logs[0].created_at).getTime()) / (1000 * 60 * 60))
     : null;
 
-  return (
-    <div className="p-4 space-y-6 text-white border border-white/10 mx-4 my-6 rounded-2xl bg-black">
-        <h1 className="text-2xl font-bold text-center">Welcome back, {name} 👋</h1>
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
+    type Day = typeof days[number];
 
-        {/* Top Row: Summary + Pie Chart + Last Log */}
-        <div className="flex flex-col md:flex-row gap-6">
-          {/* Left: Mental Health Summary */}
-          <div className="flex-1 bg-white/5 border border-white/10 rounded-xl p-6 space-y-4">
+    const logsPerDay: Record<Day, Log[]> = {
+      Mon: [],
+      Tue: [],
+      Wed: [],
+      Thu: [],
+      Fri: [],
+      Sat: [],
+      Sun: [],
+    };
+
+    logs.forEach(log => {
+      const day = new Date(log.created_at).toLocaleDateString('en-US', { weekday: 'short' }) as Day;
+      if (logsPerDay[day]) {
+        logsPerDay[day].push(log);
+      }
+    });
+
+
+  return (
+    <div className='bg-black min-h-screen w-full overflow-hidden'>
+      <div className="p-6 space-y-6 text-white border border-white/10 mx-4 my-6 rounded-2xl bg-white/5">
+        <h1 className="text-2xl font-bold">Welcome back, {name} 👋</h1>
+
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex-1 bg-black border border-white/10 rounded-xl p-4 space-y-4">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Mental Health Summary</h2>
-              <div className="flex gap-4 text-right">
+              <div className="flex gap-4 text-right mr-2">
                 <StatBox label="Stress" value={avg('stress_level')} />
                 <StatBox label="Anxiety" value={avg('anxiety_level')} />
                 <StatBox label="Depression" value={avg('depression_level')} />
               </div>
             </div>
-            <div className="h-24 w-full rounded-lg bg-gradient-to-r from-green-400 via-yellow-400 to-red-500 flex items-center justify-center text-black font-semibold text-lg">
+            <div className="mt-12 h-24 w-full rounded-lg bg-gradient-to-r from-green-400 via-yellow-400 to-red-600 flex items-center justify-center text-black font-semibold text-lg">
               {getHealthMessage(avg('stress_level'), avg('anxiety_level'), avg('depression_level'))}
             </div>
           </div>
 
-          {/* Middle: Pie Chart */}
-          <div className="w-full md:w-1/3 bg-white/5 border border-white/10 rounded-xl p-4">
-            <h3 className="font-semibold text-lg mb-2">Mood Distribution</h3>
-            <PieChartComponent logs={logs} />
-          </div>
+          <div className="w-full md:w-1/3 bg-black border border-white/10 rounded-xl p-3 space-y-4">
+            <h3 className="font-semibold text-lg mb-2">Mood Logging Activity</h3>
 
-          {/* Right: Last Mood Log */}
-          <div className="w-full md:w-1/3 bg-white/5 border border-white/10 rounded-xl p-4">
-            <h3 className="font-semibold text-lg mb-2">Last Mood Log</h3>
-            <p className="text-sm text-gray-300">
-              {lastLogTime !== null ? `Last logged: ${lastLogTime} hours ago` : 'No logs yet'}
-            </p>
+            <div className="text-sm text-gray-300 flex flex-col relative h-16">
+              <span className="text-sm text-gray-400">Last logged:</span>
+
+              <span className="absolute top-8 text-5xl md:text-6xl font-bold text-[#2ef0f7]">
+                {lastLogTime !== null ? `${lastLogTime}` : '--'}
+                <span className="text-base font-medium text-gray-400 ml-1">hrs ago</span>
+              </span>
+            </div>
+
+            <div className="flex justify-end gap-6 h-24 mr-2">
+                {days.map((day) => (
+                  <div key={day} className="flex flex-col items-center justify-end gap-1">
+                    <div
+                      className="w-4 bg-blue-700 rounded"
+                      style={{ height: `${logsPerDay[day].length * 12}px` }}
+                    />
+                    <span className="text-xs text-white">{day}</span>
+                  </div>
+                ))}
+            </div>
           </div>
         </div>
 
-        <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-          <h3 className="text-lg font-semibold mb-2">Mental Health Score</h3>
+        <div className="bg-black border border-white/10 rounded-xl p-4 w-full md:w-full">
+          <h3 className="text-lg font-semibold mb-2">Overall Mental Health</h3>
           <MentalHealthAreaChart logs={logs} />
         </div>
-
-        <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+         
+        <div className='flex flex-col md:flex-row gap-4 w-full'> 
+         <div className="bg-black border border-white/10 rounded-xl p-4 w-full md:w-1/2">
           <h3 className="text-lg font-semibold mb-2">Stress, Anxiety & Depression (Past Week)</h3>
-          <BarChartComponent logs={logs} />
+          <div className="flex justify-center mt-9 mr-10">
+            <BarChartComponent logs={logs} />
+          </div>
         </div>
-      </div>
 
+         <div className="w-full md:w-1/2 bg-black border border-white/10 rounded-xl p-4">
+            <h3 className="font-semibold text-lg mb-2">Mood Distribution</h3>
+            <PieChartComponent logs={logs} />
+        </div>
+       </div>
+      </div>
+    </div>
   );
 }
 

@@ -22,7 +22,7 @@ type Props = {
   logs: Log[];
 };
 
-const COLORS = ['#ef4444', '#f59e0b', '#3b82f6'];
+const COLORS = ['#102e92', '#2ef0f7', '#0a7e86'];
 
 export default function PieChartComponent({ logs }: Props) {
   const latestLog = logs.length > 0 ? logs[0] : null;

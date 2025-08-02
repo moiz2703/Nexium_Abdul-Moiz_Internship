@@ -72,7 +72,7 @@ const handlesubmit = async (e:React.FormEvent<HTMLFormElement>) => {
       throw new Error("N8N Failure");
     }
     const data = await response.json();
-    console.log("N8N response:", data); // 👈 Add this
+    console.log("N8N response:", data); 
     const stress = data.stress_level;
     const depression = data.depression_level;
     const anxiety = data.anxiety_level;
@@ -134,14 +134,14 @@ const handlesubmit = async (e:React.FormEvent<HTMLFormElement>) => {
                 {loading ? (
                   <Button
                     disabled
-                    className="flex items-center gap-2 bg-blue-700 text-white px-4 py-2 rounded-lg shadow"
+                    className="active:bg-blue-700 flex items-center gap-2 bg-blue-800 text-white px-4 py-2 rounded-lg shadow w-full"
                   >
                     <Loader className="animate-spin h-4 w-4" />
                     Analyzing...
                   </Button>
                 ) : (
                   <Button
-                    className="bg-blue-700 text-white px-4 py-2 rounded-lg shadow w-full"
+                    className="bg-blue-800 text-white px-4 py-2 rounded-lg shadow w-full hover:bg-blue-700"
                   >
                     Get Suggestions
                   </Button>
@@ -149,16 +149,16 @@ const handlesubmit = async (e:React.FormEvent<HTMLFormElement>) => {
 
               </form>
 
-              {aisummary && (
-              <div className="mt-8 space-y-6]">
-                <div className="bg-[#021024] border border-white/20 rounded-xl p-4 shadow">
-                  <h3 className="text-xl font-semibold text-white mb-2">🧠 Your Mental State Summary</h3>
-                  <p className="text-gray-200 whitespace-pre-line">{aisummary}</p>
-                </div>
+          {aisummary && (
+            <div className="mt-8 space-y-6]">
+              <div className="bg-[#021024] border border-white/20 rounded-xl p-4 shadow">
+                <h3 className="text-xl font-semibold text-white mb-2">🧠 Your Mental State Summary</h3>
+                <p className="text-gray-200 whitespace-pre-line">{aisummary}</p>
               </div>
+            </div>
             )}
-          </div>
-        </div>
+           </div>
+         </div>
 
         {sugg && (
           <div className="bg-white/5 border border-white/10 rounded-2xl mt-5 p-6 max-w-md">
@@ -169,7 +169,7 @@ const handlesubmit = async (e:React.FormEvent<HTMLFormElement>) => {
                 {aisuggestions.map((suggestion, index) => (
                   <div
                     key={index}
-                    className="bg-gradient-to-br from-blue-950 via-blue-950 to-blue-900 border border-white/10 rounded-xl p-4 shadow text-white"
+                    className="bg-gradient-to-br bg-[#021024] border-white/10 rounded-xl p-4 shadow text-white"
                   >
                     <h4 className="font-bold mb-2">Suggestion {index + 1}</h4>
                     <p className="text-gray-200">{suggestion.trim()}</p>

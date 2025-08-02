@@ -36,15 +36,15 @@ export default function HeroSection() {
         <p className={`${roboto.className} max-w-3xl mx-auto text-md text-gray-300 mb-2`}>
             Welcome to <span className="text-yellow-400 font-bold tracking-wide italic">MindWave</span>
         </p>
-        <h1 className={`${poppins.className} text-6xl md:text-8xl bg-gradient-to-r from-green-400 via-cyan-200 to-blue-400 text-transparent bg-clip-text mx-auto`}>
+        <h1 className={`${poppins.className} text-6xl md:text-8xl bg-gradient-to-r from-green-400 via-cyan-200 to-blue-300 text-transparent bg-clip-text mx-auto`}>
           Build Your Mind <br /> Boost Your Life
         </h1>
         <p className={`${roboto.className} max-w-6xl mx-auto text-lg text-gray-300 mt-10`}>
         A powerful mental wellness companion to help you reflect, relax, and grow stronger every day — nurturing emotional clarity, inner peace, and long-term resilience.
         </p>
         <div className="flex items-center justify-center gap-8 mt-18">
-          <Button onClick={handleExploreClick} className="bg-blue-800 px-4 py-5 w-35 font-semibold transition transform hover:scale-105 hover:shadow-lg hover:bg-blue-600 active:scale-95 active:translate-y-1 active:bg-blue-800">
-            <Telescope className='fill-current'/>
+          <Button onClick={handleExploreClick} className="bg-blue-800 px-4 py-5 w-35 font-semibold transition transform hover:scale-105 hover:shadow-lg hover:bg-blue-700 active:scale-95 active:bg-blue-800">
+          <Telescope className='fill-current'/>
             Explore
           </Button>
           <Link href='/login'>
