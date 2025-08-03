@@ -1,34 +1,36 @@
-# Mindwave – Mental Wellness Web App 🧠💫
+# AI Blog Summarizer 📰✨
 
-Mindwave is a mental wellness tracking app built with Next.js, Supabase, and AI. It allows users to log moods, write journal entries, and get AI-generated reflections and suggestions for emotional well-being.
+An intelligent blog summarizer web app that allows users to input a blog URL and receive an AI-generated summary in seconds. Built using Next.js, ShadCN UI, Supabase, OpenAI, and an automated n8n backend.
 
-#  Features
+## 🚀 Features
 
--  Mood logging with journal inputs
--  AI-powered reflection and suggestion generation (via n8n + OpenAI)
--  Visual mood history and trends
--  User authentication (Supabase Auth)
--  Clean UI with ShadCN and Tailwind CSS
--  Supabase as backend (PostgreSQL, Auth, Storage)
+-  Accepts any blog/article URL
+-  AI-generated summary using OpenAI via n8n
+-  Clean UI built with ShadCN and Tailwind CSS
+-  Supports dynamic scraping using Playwright
+-  Saves summaries in Supabase
+-  Client-side + server-side validation
 
-## Tech Stack
+##  Tech Stack
 
-- **Framework**: Next.js 15 (App Router)
-- **Database & Auth**: Supabase
-- **UI**: ShadCN UI + Tailwind CSS
-- **API Calls**: n8n + OpenAI API
-- **Charts**: Recharts (or similar)
-- **Deployment**: Vercel
+- Frontend: Next.js 15 (App Router), TypeScript
+- UI: ShadCN UI, Tailwind CSS
+- Backend: Supabase (PostgreSQL + Auth)
+- AI Workflow: n8n
+- **Deployment: Vercel
 
 
-# Supabase Schema
-users – Supabase Auth users
-mood_logs – mood, journal, and timestamp
-reflections – generated AI suggestions
-Policies ensure each user sees only their own logs.
+## 🧠 How It Works
 
-🛠️ n8n Workflow
-Receives journal + mood
-Sends to Gemini AI
-Returns summary + suggestions to frontend
+1. User enters a **blog URL**
+2. Clean blog text is sent to an **n8n webhook**
+3. **n8n** uses **HTTP Request node** to output the html document of the blog and **Gemini** to clean the document, and then **jscode** for summarizing.
+4. Summary is returned to frontend and optionally saved in **Supabase**
+5. Full Content of blog is saved in **MongoDB**.
+
+## Supabase Schema
+users – Supabase Auth
+summaries – stores blog URL, summary text, user ID, and timestamp
+
+
 
