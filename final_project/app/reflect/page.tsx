@@ -78,25 +78,23 @@ const handlesubmit = async (e:React.FormEvent<HTMLFormElement>) => {
     const anxiety = data.anxiety_level;
     const summary = data.agent_summary;
     const suggestions = data.suggestions 
-    setsugg(true);
     setaisummary(summary || "No summary generated.");
     setaisuggestions(Array.isArray(suggestions) ? suggestions : []);
-
+    setloading(false);
+    setsugg(true);
     await saveToSupabase(stress, depression, anxiety, journal, summary, suggestions, mood)
 
 
   } catch (err) {
     console.error(err);
     seterror("An error occurred while fetchings results.");
-  } finally {
-    setloading(false);
   }
 };
 
 
   return (
     <div className="flex flex-col items-center py-14 min-h-screen space-y-6">
-      <h1 className="text-3xl md:text-5xl font-semibold text-center bg-gradient-to-r from-yellow-400 via-cyan-500 to-yellow-300 bg-clip-text text-transparent">
+      <h1 className="text-3xl md:text-5xl font-semibold text-center bg-gradient-to-r from-[#c1e8ff] via-[#7da0ca] to-amber-200 bg-clip-text text-transparent">
         Your Daily Reflection
       </h1>
       <p className="text-center text-md md:text-lg text-gray-300 max-w-2xl">
