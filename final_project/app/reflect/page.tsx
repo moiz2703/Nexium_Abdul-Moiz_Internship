@@ -98,7 +98,7 @@ const handlesubmit = async (e:React.FormEvent<HTMLFormElement>) => {
         Your Daily Reflection
       </h1>
       <p className="text-center text-md md:text-lg text-gray-300 max-w-2xl">
-        Take a moment to reflect on how you're feeling today — and receive instant suggestions to help you feel calmer and more centered.
+        Take a moment to reflect on how you are feeling today — and receive instant suggestions to help you feel calmer and more centered.
       </p>
 
       <div className="flex flex-col md:flex-row gap-10 transition-all duration-500">
@@ -178,6 +178,7 @@ const handlesubmit = async (e:React.FormEvent<HTMLFormElement>) => {
           )}
           </div>
         )}
+        {error && <p className="text-red-400 mt-4 text-center">{error}</p>}
       </div>
     </div>
   )

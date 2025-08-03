@@ -1,7 +1,15 @@
 'use client';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-export default function BarChartComponent({ logs }: { logs: any[] }) {
+type LogEntry = {
+  created_at: string;
+  stress_level: number | null;
+  anxiety_level: number | null;
+  depression_level: number | null;
+};
+
+export default function BarChartComponent({ logs }: { logs: LogEntry[] }) {
+
   const data = logs.map(log => ({
     date: new Date(log.created_at).toLocaleDateString(),
     stress: log.stress_level || 0,

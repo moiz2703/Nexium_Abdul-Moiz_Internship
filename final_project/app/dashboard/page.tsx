@@ -86,25 +86,27 @@ const avg = (key: NumericLogKey): number => {
     ? Math.floor((Date.now() - new Date(logs[0].created_at).getTime()) / (1000 * 60 * 60))
     : null;
 
-    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
-    type Day = typeof days[number];
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
+  type Day = typeof days[number];
 
-    const logsPerDay: Record<Day, Log[]> = {
-      Mon: [],
-      Tue: [],
-      Wed: [],
-      Thu: [],
-      Fri: [],
-      Sat: [],
-      Sun: [],
-    };
+  const logsPerDay: Record<Day, Log[]> = {
+    Mon: [],
+    Tue: [],
+    Wed: [],
+    Thu: [],
+    Fri: [],
+    Sat: [],
+    Sun: [],
+  };
 
-    logs.forEach(log => {
-      const day = new Date(log.created_at).toLocaleDateString('en-US', { weekday: 'short' }) as Day;
-      if (logsPerDay[day]) {
-        logsPerDay[day].push(log);
-      }
-    });
+  logs.forEach(log => {
+    const day = new Date(log.created_at).toLocaleDateString('en-US', { weekday: 'short' }) as Day;
+    if (logsPerDay[day]) {
+      logsPerDay[day].push(log);
+    }
+  });
+  const displayDays: Day[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
 
 
   return (

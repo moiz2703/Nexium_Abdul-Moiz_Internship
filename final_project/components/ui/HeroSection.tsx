@@ -3,7 +3,7 @@ import { Poppins ,Roboto} from 'next/font/google';
 import { Button } from './button';
 import Link from 'next/link';
 import { Play, Telescope } from 'lucide-react';
-import { easeIn, motion } from "framer-motion"
+import { motion } from "framer-motion"
 
 const roboto = Roboto({
   subsets: ['latin'],

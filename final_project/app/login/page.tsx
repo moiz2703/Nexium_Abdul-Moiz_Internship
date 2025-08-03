@@ -18,11 +18,12 @@ export default function AuthPage() {
   useEffect(() => {
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'SIGNED_IN') {
         router.push('/reflect');
       }
     });
+    
 
     return () => {
       subscription.unsubscribe();
